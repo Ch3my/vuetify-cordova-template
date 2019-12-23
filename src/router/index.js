@@ -1,42 +1,41 @@
+/*
+* El archivos Routes
+* To use the router in your components:
+* this.$router.push({name: 'Page'})
+*
+*
+*
+*/
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+// Importamos el Store para poder usarlo
+import store from '@/store'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  {
-    path: '/camera',
-    name: 'camera',
-    component: () => import(/* webpackChunkName: "camera" */ '../views/Camera.vue')
-  },
-  {
-    path: '/geolocation',
-    name: 'geolocation',
-    component: () => import(/* webpackChunkName: "camera" */ '../views/Geolocation.vue')
-  },
-  {
-    path: '/form',
-    name: 'form',
-    component: () => import(/* webpackChunkName: "camera" */ '../views/Form.vue')
-  },
-  {
-    path: '/splashscreen',
-    name: 'splashscreen',
-    component: () => import(/* webpackChunkName: "camera" */ '../views/Splashscreen.vue')
-  },
+// .______        ______    __    __  .___________. _______      _______.
+// |   _  \      /  __  \  |  |  |  | |           ||   ____|    /       |
+// |  |_)  |    |  |  |  | |  |  |  | `---|  |----`|  |__      |   (----`
+// |      /     |  |  |  | |  |  |  |     |  |     |   __|      \   \    
+// |  |\  \----.|  `--'  | |  `--'  |     |  |     |  |____ .----)   |   
+// | _| `._____| \______/   \______/      |__|     |_______||_______/  
+
+// TODO. Create 404 Route and View
+const routes = [{
+  path: '/login',
+  name: 'login',
+  component: () => import(/* webpackChunkName: "login" */ '../views/entrance/Login.vue'),
+}, {
+  path: '/',
+  name: 'home',
+  component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
+  meta: { isLoggedIn: true }
+},
+// {
+//   // 404 Route. TODO. Implement notFound View and Stuff
+//   path: '*',
+//   redirect: '/notFound'
+// }
 ]
 
 const router = new VueRouter({
@@ -44,6 +43,34 @@ const router = new VueRouter({
   // mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+// .______     ______    __       __    ______  __   _______      _______.
+// |   _  \   /  __  \  |  |     |  |  /      ||  | |   ____|    /       |
+// |  |_)  | |  |  |  | |  |     |  | |  ,----'|  | |  |__      |   (----`
+// |   ___/  |  |  |  | |  |     |  | |  |     |  | |   __|      \   \    
+// |  |      |  `--'  | |  `----.|  | |  `----.|  | |  |____ .----)   |   
+// | _|       \______/  |_______||__|  \______||__| |_______||_______/    
+                                                                       
+router.beforeEach((to, from, next) => {
+  if (to.meta) {
+    // Si tiene polices que Verificar
+    if (to.meta.isLoggedIn) {
+      if (store.state.user.isLoggedIn) {
+        // Is logged In
+        next()
+      } else {
+        // Is not Logged In
+        next('/login')
+      }
+    } else {
+      // Otras Polices
+      next()
+    }
+  } else{
+    // No tiene Meta especificado. Suponemos que no tiene ninguna policie
+    next()
+  }
 })
 
 export default router

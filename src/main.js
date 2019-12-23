@@ -10,11 +10,13 @@ import '@mdi/font/css/materialdesignicons.css'
 import VueCompositionApi from '@vue/composition-api'
 import moment from 'moment'
 
-// Lodash
+// ==============================
+// ==== Lodash
 import _ from 'lodash'; 
 Object.defineProperty(Vue.prototype, '$_', { value: _ });
 
-// Numeral
+// ==============================
+// ==== Numeral
 import VueNumerals from 'vue-numerals';
 // Vue.use(VueNumerals); // default locale is 'en'
 // nosotros queremos setearle la Locale
@@ -22,8 +24,13 @@ import VueNumerals from 'vue-numerals';
 Vue.use(VueNumerals, {
   locale: 'es'
 });
-// Moment
+// ==============================
+// ==== Moment
 Vue.prototype.moment = moment
+
+// ==============================
+// ==== Vuex
+Vue.use(store)
 
 
 Vue.config.productionTip = false
