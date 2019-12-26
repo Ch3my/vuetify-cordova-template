@@ -4,7 +4,7 @@
       <!-- dense was taken out from v-list -->
       <v-list>
         <template v-for="(menu, i) in testingMenu">
-          <v-list-group v-if="menu.children.length" prepend-icon="mdi-account-circle" :key="i">
+          <v-list-group v-if="menu.children.length" :prepend-icon="menu.icon" :key="i">
             <template v-slot:activator>
               <v-list-item-title>{{menu.text}}</v-list-item-title>
             </template>
@@ -94,7 +94,10 @@ export default {
         ]
       },
       { icon: "", text: "Camera", route: "/camera", children: [] },
-      { icon: "", text: "SplashScreen", route: "/splashscreen", children: [] }
+      { icon: "", text: "SplashScreen", route: "/splashscreen", children: [] },
+      { icon: "mdi-settings", text: "Config", route: "", children: [
+        { icon: "", text: "Salir", route: "/logout", grandChildren: [] }
+      ] }
     ]
   })
 };

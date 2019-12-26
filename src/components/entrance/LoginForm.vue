@@ -53,6 +53,9 @@
 
 <script>
 import axios from "axios";
+// import { openDB, deleteDB, wrap, unwrap } from "idb";
+// import { openDB, deleteDB } from "idb";
+import { openDB } from "idb";
 
 export default {
   name: "LoginForm",
@@ -73,7 +76,6 @@ export default {
       if (this.$refs.loginForm.validate()) {
         var argins = this.formData;
         // Se creo esto objeto para evitar el error XMLHttpRequest has been blocked by CORS
-        console.log(argins);
         try {
           const response = await axios.put(
             "http://localhost:1337/api/v1/login",
@@ -96,7 +98,39 @@ export default {
               this.cloudError.description = "";
             }, 5000);
           } else {
-            console.log("Todo ok");
+            // Marcamos como Logged In y Guardamos el objeto user
+            try {
+              // Borramos la base de datos y Creamos de nuevo cada vez que se inicia sesion
+              // para mantenerla actualizada y asegurar que los datos son correctos
+              // no puedo ejecutar await dentro de DB me parece
+              // A veces se quedaba borrando la base de datos. Se elimino borrar la base de datos
+              // cuando hace Logout se limpian todas las variables asi que quiza este
+              // paso no es necesario
+              // await deleteDB("serv_app");
+              console.log("base de datos Borrada")
+              const db = await openDB("serv_app", 1, {
+                upgrade(db, oldVersion) {
+                  console.log(oldVersion);
+                  // Create a store of objects
+                  const store = db.createObjectStore("data", {
+                    // The 'id' property of the object will be the key.
+                    keyPath: "propertyName"
+                  });
+                  // Create an index on the 'date' property of the objects.
+                  store.createIndex("dataIndex", "propertyName");
+                }
+              });
+              console.log("base de datos Abierta")
+              // Add user data
+              var IDBUser = this.$_.merge({propertyName:  "user"}, response.data.user)
+              await db.add("data", IDBUser);
+              console.log("Informacion Creada.  Enviaremos a Home")
+              // Send to LoggedIn Area
+              this.$router.push({name: 'home'})
+            } catch (e) {
+              // Catch de Crear la base de datos
+              console.log(e);
+            }
           }
         } catch (e) {
           console.log(
