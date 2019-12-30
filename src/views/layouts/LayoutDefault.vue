@@ -94,6 +94,7 @@ export default {
         ]
       },
       { icon: "", text: "Camera", route: "/camera", children: [] },
+      { icon: "", text: "Secure", route: "/secure", children: [] },
       { icon: "", text: "SplashScreen", route: "/splashscreen", children: [] },
       { icon: "mdi-settings", text: "Config", route: "", children: [
         { icon: "", text: "Salir", route: "/logout", grandChildren: [] }

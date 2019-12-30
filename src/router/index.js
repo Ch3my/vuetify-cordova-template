@@ -11,7 +11,7 @@ import VueRouter from 'vue-router'
 // Importamos el Store para poder usarlo
 // import store from '@/store'
 // Importamos idb para acceder a IndexedDB
-import { openDB } from "idb";
+// import { openDB } from "idb";
 
 Vue.use(VueRouter)
 
@@ -38,6 +38,11 @@ const routes = [{
   name: 'logout',
   meta: { },
   component: () => import(/* webpackChunkName: "logout" */ '../views/entrance/Logout.vue'),
+}, {
+  path: '/secure',
+  name: 'secure',
+  meta: { },
+  component: () => import(/* webpackChunkName: "logout" */ '../views/entrance/Secure.vue'),
 },
   // {
   //   // 404 Route. TODO. Implement notFound View and Stuff
@@ -61,24 +66,12 @@ const router = new VueRouter({
 // | _|       \______/  |_______||__|  \______||__| |_______||_______/    
 
 router.beforeEach(async (to, from, next) => {
-  // Sino encuentra la base de datos o la coleccion user quedara Null y sera redireccionado
-  // al login page
-  var user = null
-  if (to.meta.isLoggedIn) {
-    try {
-      const db = await openDB('serv_app', 1)
-      const IDBData = db.transaction("data").objectStore("data");
-      user = await IDBData.get('user')
-    } catch (e) {
-      console.log('Router: No se pudo abrir la base de datos o leer la coleccion Data')
-      console.log(e)
-    }
-  }
+  var session = localStorage.getItem('session') || null;
 
   if (to.meta) {
     // Si tiene polices que Verificar
     if (to.meta.isLoggedIn) {
-      if (user) {
+      if (session) {
         // Is logged In
         next()
       } else {
@@ -86,7 +79,7 @@ router.beforeEach(async (to, from, next) => {
         next('/login')
       }
     } else if (to.meta.loginOrRedirect) {
-      if (user) {
+      if (session) {
         // Is logged In
         next('/')
       } else {

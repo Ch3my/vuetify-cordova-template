@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.vue.example.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<!-- <widget id="com.vue.example.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"> -->
 <!-- Permite consumir api que no son https  -->
-<!-- <widget id="com.vue.example.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0"> -->
+<widget id="com.vue.example.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>VueExampleAppName</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -47,9 +47,9 @@
         <splash src="assets/img/pwa/splash.png" density="port-xhdpi"/>
         <splash src="assets/img/pwa/splash.png" density="port-xxhdpi"/>
         <!-- Permite consumir api que no son https  -->
-        <!-- <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:usesCleartextTraffic="true" />
-        </edit-config> -->
+        </edit-config>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />

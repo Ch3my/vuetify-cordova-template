@@ -51,9 +51,9 @@
 <script>
 // Elimina la base de datos persistente. Luego redirecciona al inicio de Session
 // import { deleteDB } from "idb";
-import { openDB } from "idb";
+// import { openDB } from "idb";
 // import LayoutLogin from "@/views/layouts/LayoutLogin.vue";
-
+import axios from "axios";
 export default {
   name: "Logout",
   data: () => {
@@ -67,9 +67,17 @@ export default {
   mounted() {},
   methods: {
     logout: async function() {
-      const db = await openDB("serv_app");
-      await db.clear("data");
-      this.$router.push({ name: "login" });
+      // const db = await openDB("serv_app");
+      // await db.clear("data");
+      // this.$router.push({ name: "login" });
+      // mandamos Eliminar la Session del Servidor
+      axios.get("https://zenitx.loginto.me:1337/api/v1/logout").then(data => {
+        // console.log(data);
+        if(data)
+        // Limpiamos la Session del LocalStorage
+        localStorage.clear();
+        this.$router.push({ name: "login" });
+      });
     }
   }
 };
